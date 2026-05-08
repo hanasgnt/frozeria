@@ -12,17 +12,18 @@ return new class extends Migration
     public function up()
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->id();
+                       $table->id();
             $table->string('name');
-
-            $table->foreignId('category_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->integer('stock')->default(0);
-            $table->string('satuan')->default('pcs');
+            $table->integer('minimum_stock')->default(0);
+            $table->string('unit')->default('pcs');
+            $table->decimal('selling_price', 15, 2)->nullable();
+            $table->decimal('purchase_price', 15, 2)->nullable();
+            $table->string('weight')->nullable();
+            $table->string('storage_location')->nullable();
             $table->text('description')->nullable();
             $table->string('photo')->nullable();
-
             $table->timestamps();
         });
     }
