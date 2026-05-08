@@ -1,18 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 use App\Http\Controllers\ItemController;
-use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\StokTransaksiController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TransactionController;
 
 Route::get('/', [ItemController::class, 'index'])->name('dashboard');
 
-// item
+// Item
 Route::get('/item/create', [ItemController::class, 'create'])->name('item.create');
 Route::post('/item', [ItemController::class, 'store'])->name('item.store');
 Route::get('/item/{item}', [ItemController::class, 'show'])->name('item.show');
@@ -20,19 +15,19 @@ Route::get('/item/{item}/edit', [ItemController::class, 'edit'])->name('item.edi
 Route::put('/item/{item}', [ItemController::class, 'update'])->name('item.update');
 Route::delete('/item/{item}', [ItemController::class, 'destroy'])->name('item.destroy');
 
-// Stok Transaksi
-Route::get('/stok', [StokTransaksiController::class, 'index'])->name('stok.index');
-Route::get('/item/{item}/stok/tambah', [StokTransaksiController::class, 'create'])->name('stok.create');
-Route::post('/item/{item}/stok', [StokTransaksiController::class, 'store'])->name('stok.store');
-Route::get('/item/{item}/stok/riwayat', [StokTransaksiController::class, 'riwayat'])->name('stok.riwayat');
+// Transaction
+Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
+Route::get('/item/{item}/transaction/create', [TransactionController::class, 'create'])->name('transaction.create');
+Route::post('/item/{item}/transaction', [TransactionController::class, 'store'])->name('transaction.store');
+Route::get('/item/{item}/transaction/history', [TransactionController::class, 'history'])->name('transaction.history');
 
-// Kategori
-Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
-Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
-Route::post('/kategori', [KategoriController::class, 'store'])->name('kategori.store');
-Route::get('/kategori/{kategori}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
-Route::put('/kategori/{kategori}', [KategoriController::class, 'update'])->name('kategori.update');
-Route::delete('/kategori/{kategori}', [KategoriController::class, 'destroy'])->name('kategori.destroy');
+// Category
+Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
+Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');
+Route::post('/category', [CategoryController::class, 'store'])->name('category.store');
+Route::get('/category/{category}/edit', [CategoryController::class, 'edit'])->name('category.edit');
+Route::put('/category/{category}', [CategoryController::class, 'update'])->name('category.update');
+Route::delete('/category/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
-// Bantuan
-Route::view('/bantuan', 'bantuan.index')->name('bantuan');
+// Help
+Route::view('/help', 'help.index')->name('help');

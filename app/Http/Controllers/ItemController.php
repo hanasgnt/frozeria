@@ -2,64 +2,119 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Item;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Item::with('category');
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        $items = $query->paginate(15)->withQueryString();
+        $categories = Category::all();
+
+        $totalItems = Item::count();
+        $totalCategories = Category::count();
+        $lowStock = Item::whereRaw('stock <= minimum_stock AND stock > 0')->count();
+        $stokMenipis = Item::where('stock', '>', 0)->where('stock', '<', 20)->count();
+        $stokHabis = Item::where('stock', 0)->count();
+
+        return view('dashboard.index', compact('items', 'categories', 'totalItems', 'totalCategories', 'lowStock', 'stokMenipis', 'stokHabis'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function show(Item $item)
+    {
+        $item->load('category');
+        return view('item.show', compact('item'));
+    }
+
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('item.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'nullable|exists:categories,id',
+            'stock' => 'required|integer|min:0',
+            'minimum_stock' => 'nullable|integer|min:0',
+            'unit' => 'required|string|max:50',
+            'selling_price' => 'nullable|numeric|min:0',
+            'purchase_price' => 'nullable|numeric|min:0',
+            'weight' => 'nullable|string|max:100',
+            'storage_location' => 'nullable|string|max:100',
+            'description' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $data = $request->except('photo');
+
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('items', 'public');
+        }
+
+        Item::create($data);
+
+        return redirect()->route('dashboard')->with('success', 'Barang berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Item $item)
     {
-        //
+        $categories = Category::all();
+        return view('item.edit', compact('item', 'categories'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, Item $item)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'nullable|exists:categories,id',
+            'stock' => 'required|integer|min:0',
+            'minimum_stock' => 'nullable|integer|min:0',
+            'unit' => 'required|string|max:50',
+            'selling_price' => 'nullable|numeric|min:0',
+            'purchase_price' => 'nullable|numeric|min:0',
+            'weight' => 'nullable|string|max:100',
+            'storage_location' => 'nullable|string|max:100',
+            'description' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $data = $request->except(['photo', '_method', '_token']);
+
+        if ($request->hasFile('photo')) {
+            if ($item->photo) {
+                Storage::disk('public')->delete($item->photo);
+            }
+            $data['photo'] = $request->file('photo')->store('items', 'public');
+        }
+
+        $item->update($data);
+
+        return redirect()->route('dashboard')->with('success', 'Barang berhasil diperbarui!');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Item $item)
     {
-        //
-    }
+        if ($item->photo) {
+            Storage::disk('public')->delete($item->photo);
+        }
+        $item->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('dashboard')->with('success', 'Barang berhasil dihapus!');
     }
 }
