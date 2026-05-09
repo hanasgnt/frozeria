@@ -11,6 +11,13 @@
     <div class="card-body">
         <form method="GET" style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
             <div>
+                <label style="font-size:12px;">Search</label>
+                <div class="search-wrap">
+                    <span class="icon-search">🔍</span>
+                    <input type="text" name="q" placeholder="Cari barang / catatan..." value="{{ request('q') }}" style="min-width:200px;">
+                </div>
+            </div>
+            <div>
                 <label style="font-size:12px;">Barang</label>
                 <select name="item" style="min-width:180px;">
                     <option value="">Semua Barang</option>

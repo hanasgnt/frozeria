@@ -40,14 +40,14 @@
                     <span class="icon-search">🔍</span>
                     <input type="text" name="search" placeholder="Cari nama barang..." value="{{ request('search') }}">
                 </div>
-                <select name="category_id" style="width:180px" onchange="this.form.submit()">
+                <select name="cid" style="width:180px" onchange="this.form.submit()">
                     <option value="">Semua kategori</option>
                     @foreach($categories as $cat)
-                        <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                        <option value="{{ $cat->id }}" {{ request('cid') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                     @endforeach
                 </select>
                 <button type="submit" class="btn btn-secondary btn-sm">Cari</button>
-                @if(request('search') || request('category_id'))
+                @if(request('search') || request('cid'))
                     <a href="{{ route('dashboard') }}" class="btn btn-secondary btn-sm">Reset</a>
                 @endif
             </div>

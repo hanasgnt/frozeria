@@ -17,8 +17,8 @@ class ItemController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
+        if ($request->filled('cid')) {
+            $query->where('category_id', $request->cid);
         }
 
         $items = $query->paginate(15)->withQueryString();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
@@ -11,6 +12,15 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         $query = Transaction::with('item.category')->latest();
+
+        if (request('q')) {
+            $query->where(function ($q) {
+                $q->whereHas('item', function ($i) {
+                    $i->where('name', 'like', '%' . request('q') . '%');
+                })
+                    ->orWhere('note', 'like', '%' . request('q') . '%');
+            });
+        }
 
         if ($request->filled('item')) {
             $query->where('item_id', $request->item);
@@ -27,8 +37,9 @@ class TransactionController extends Controller
 
         $transactions = $query->paginate(20)->withQueryString();
         $items = Item::orderBy('name')->get();
+        $categories = Category::orderBy('name')->get();
 
-        return view('transaction.index', compact('transactions', 'items'));
+        return view('transaction.index', compact('transactions', 'items', 'categories'));
     }
 
     public function create(Item $item)

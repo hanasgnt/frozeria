@@ -9,10 +9,12 @@
 
 <div class="card">
     <div class="card-body" style="padding-bottom:0">
-        <form method="GET" style="margin-bottom:16px;">
-            <input type="text" name="search" placeholder="Cari kategori..." value="{{ request('search') }}" style="max-width:320px;">
-        </form>
-
+        <div class="search-wrap">
+            <form method="GET" style="margin-bottom:16px;">
+                <span class="icon-search">🔍</span>
+                <input type="text" name="search" placeholder="Cari kategori..." value="{{ request('search') }}" style="max-width:320px;">
+            </form>
+        </div>
         <table>
             <thead>
                 <tr>
