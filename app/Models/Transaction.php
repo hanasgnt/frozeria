@@ -19,4 +19,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(Item::class);
     }
+
+    public function isPositive()
+    {
+        return $this->type === 'in';
+    }
 }

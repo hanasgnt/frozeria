@@ -12,17 +12,17 @@ class TransactionController extends Controller
     {
         $query = Transaction::with('item.category')->latest();
 
-        if ($request->filled('item_id')) {
-            $query->where('item_id', $request->item_id);
+        if ($request->filled('item')) {
+            $query->where('item_id', $request->item);
         }
-        if ($request->filled('type')) {
-            $query->where('type', $request->type);
+        if ($request->filled('t')) {
+            $query->where('type', $request->t);
         }
-        if ($request->filled('date_from')) {
-            $query->whereDate('created_at', '>=', $request->date_from);
+        if ($request->filled('from')) {
+            $query->whereDate('created_at', '>=', $request->from);
         }
-        if ($request->filled('date_until')) {
-            $query->whereDate('created_at', '<=', $request->date_until);
+        if ($request->filled('to')) {
+            $query->whereDate('created_at', '<=', $request->to);
         }
 
         $transactions = $query->paginate(20)->withQueryString();
@@ -62,7 +62,7 @@ class TransactionController extends Controller
 
         $item->update(['stock' => $stockAfter]);
 
-        return redirect()->route('item.show', $item)
+        return redirect()->route('dashboard', $item)
             ->with('success', "Stok berhasil diperbarui. {$stockBefore} → {$stockAfter} {$item->unit}.");
     }
 
