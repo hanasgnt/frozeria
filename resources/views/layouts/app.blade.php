@@ -254,7 +254,7 @@
         .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
 
         /* FOTO UPLOAD */
-        .foto-upload-area {
+        .photo-upload-area {
             border: 2px dashed var(--gray-200);
             border-radius: var(--radius);
             padding: 32px;
@@ -263,11 +263,11 @@
             transition: all .15s;
             background: var(--gray-50);
         }
-        .foto-upload-area:hover { border-color: var(--cyan); background: var(--ice); }
-        .foto-upload-area .upload-icon { font-size: 36px; color: var(--gray-400); margin-bottom: 8px; }
-        .foto-upload-area p { font-size: 13px; color: var(--gray-600); }
-        .foto-upload-area .hint { font-size: 12px; color: var(--gray-400); margin-top: 4px; }
-        #foto-preview { max-width: 200px; max-height: 180px; border-radius: 8px; object-fit: cover; margin: 12px auto 0; display: block; }
+        .photo-upload-area:hover { border-color: var(--cyan); background: var(--ice); }
+        .photo-upload-area .upload-icon { font-size: 36px; color: var(--gray-400); margin-bottom: 8px; }
+        .photo-upload-area p { font-size: 13px; color: var(--gray-600); }
+        .photo-upload-area .hint { font-size: 12px; color: var(--gray-400); margin-top: 4px; }
+        #photo-preview { max-width: 200px; max-height: 180px; border-radius: 8px; object-fit: cover; margin: 12px auto 0; display: block; }
 
         /* DETAIL PAGE */
         .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -294,8 +294,8 @@
         .empty-state { text-align: center; padding: 48px; color: var(--gray-400); }
         .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
 
-        .foto-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; }
-        .no-foto { width: 40px; height: 40px; background: var(--gray-100); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--gray-400); font-size: 18px; }
+        .photo-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; }
+        .no-photo { width: 40px; height: 40px; background: var(--gray-100); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--gray-400); font-size: 18px; }
 
         select { cursor: pointer; }
 

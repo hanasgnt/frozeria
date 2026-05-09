@@ -72,9 +72,9 @@
                     <td>
                         <div style="display:flex; align-items:center; gap:10px;">
                             @if($item->photo)
-                                <img src="{{ asset('storage/'.$item->photo) }}" class="foto-thumb">
+                                <img src="{{ asset('storage/'.$item->photo) }}" class="photo-thumb">
                             @else
-                                <div class="no-foto">🧊</div>
+                                <div class="no-photo">🧊</div>
                             @endif
                             <span style="font-weight:500;">{{ $item->name }}</span>
                         </div>

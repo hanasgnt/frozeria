@@ -17,18 +17,18 @@
 <div class="card" style="max-width:820px;">
     <div class="card-header">Foto Barang</div>
     <div class="card-body">
-        <div class="foto-upload-area" onclick="document.getElementById('foto').click()">
+        <div class="photo-upload-area" onclick="document.getElementById('photo').click()">
             <div class="upload-icon">🖼</div>
             @if($item->photo)
-                <img id="foto-preview" src="{{ asset('storage/'.$item->photo) }}" style="max-width:200px; max-height:180px; border-radius:8px; object-fit:cover; margin:8px auto 0; display:block;">
+                <img id="photo-preview" src="{{ asset('storage/'.$item->photo) }}" style="max-width:200px; max-height:180px; border-radius:8px; object-fit:cover; margin:8px auto 0; display:block;">
             @else
-                <img id="foto-preview" style="display:none;">
+                <img id="photo-preview" style="display:none;">
             @endif
             <p style="margin-top:8px;">Klik untuk mengganti foto, atau seret file ke sini</p>
             <p class="hint">Format: JPG, PNG — Maks. 2 MB</p>
-            <button type="button" class="btn btn-secondary btn-sm" style="margin-top:12px;" onclick="event.stopPropagation(); document.getElementById('foto').click()">Pilih Foto</button>
+            <button type="button" class="btn btn-secondary btn-sm" style="margin-top:12px;" onclick="event.stopPropagation(); document.getElementById('photo').click()">Pilih Foto</button>
         </div>
-        <input type="file" id="foto" name="foto" accept="image/jpg,image/jpeg,image/png" style="display:none;" onchange="previewFoto(this)">
+        <input type="file" id="photo" name="photo" accept="image/jpg,image/jpeg,image/png" style="display:none;" onchange="previewFoto(this)">
     </div>
 
     <div class="card-header" style="border-top:1px solid var(--gray-200);">Informasi Barang</div>
@@ -109,7 +109,7 @@ function previewFoto(input) {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = e => {
-        const img = document.getElementById('foto-preview');
+        const img = document.getElementById('photo-preview');
         img.src = e.target.result;
         img.style.display = 'block';
     };

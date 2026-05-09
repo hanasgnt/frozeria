@@ -16,7 +16,7 @@
 <div class="card" style="max-width:820px;">
     <div class="card-header">Foto Barang</div>
     <div class="card-body">
-        <div class="foto-upload-area" onclick="document.getElementById('photo').click()">
+        <div class="photo-upload-area" onclick="document.getElementById('photo').click()">
             <div class="upload-icon">🖼</div>
             <p>Klik untuk memilih foto, atau seret file ke sini</p>
             <p class="hint">Format: JPG, PNG — Maks. 2 MB</p>
