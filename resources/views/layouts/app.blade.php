@@ -44,6 +44,19 @@
             min-height: 100vh;
         }
 
+        th:nth-child(1), td:nth-child(1) { width: 5%; }
+        th:nth-child(2), td:nth-child(2) { width: 25%; }
+        th:nth-child(3), td:nth-child(3) { width: 15%; }
+        th:nth-child(4), td:nth-child(4) { width: 10%; }
+        th:nth-child(5), td:nth-child(5) { width: 10%; }
+        th:nth-child(6), td:nth-child(6) { width: 15%; }
+        th:nth-child(7), td:nth-child(7) { width: 20%; }
+
+        table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
         /* NAV */
         nav {
             background: var(--navy);
@@ -78,8 +91,8 @@
         .nav-link:hover { color: var(--white); background: rgba(255,255,255,.08); }
         .nav-link.active { color: var(--white); background: rgba(0,180,216,.2); }
 
-        /* MAIN */
-        main { max-width: 1280px; margin: 0 auto; padding: 28px 24px; }
+        /* MAIN max-width: 1280px;*/
+        main { margin: 0 auto; padding: 28px 24px; }
 
         /* CARDS */
         .card {

@@ -49,9 +49,9 @@
                         <option value="{{ $cat->id }}" {{ request('cid') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                     @endforeach
                 </select>
-                <button type="submit" class="btn btn-secondary btn-sm">Cari</button>
+                <button type="submit" class="btn btn-secondary">Cari</button>
                 @if(request('search') || request('cid'))
-                    <a href="{{ route('dashboard') }}" class="btn btn-secondary btn-sm">Reset</a>
+                    <a href="{{ route('dashboard') }}" class="btn btn-secondary">Reset</a>
                 @endif
             </div>
         </form>
@@ -99,7 +99,7 @@
                         @endif
                     </td>
                     <td style="color:var(--gray-600);">{{ $item->unit }}</td>
-                    <td style="font-family:'Space Mono',monospace; font-size:13px;">
+                    <td style="font-size:13px;">
                         @if($item->selling_price)
                             Rp {{ number_format($item->selling_price, 0, ',', '.') }}
                         @else —

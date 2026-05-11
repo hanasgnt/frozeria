@@ -44,9 +44,9 @@
                 <label style="font-size:12px;">Sampai Tanggal</label>
                 <input type="date" name="to" value="{{ request('to') }}" style="width:160px;">
             </div>
-            <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+            <button type="submit" class="btn btn-primary">Filter</button>
             @if(request()->hasAny(['item','t','from','to']))
-                <a href="{{ route('transaction.index') }}" class="btn btn-secondary btn-sm">Reset</a>
+                <a href="{{ route('transaction.index') }}" class="btn btn-secondary">Reset</a>
             @endif
         </form>
     </div>
