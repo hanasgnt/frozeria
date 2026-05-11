@@ -42,6 +42,9 @@
                 </div>
                 <select name="cid" style="width:180px" onchange="this.form.submit()">
                     <option value="">Semua kategori</option>
+                    <option value="null" {{ request('cid') === 'null' ? 'selected' : '' }}>
+                        Tanpa Kategori
+                    </option>
                     @foreach($categories as $cat)
                         <option value="{{ $cat->id }}" {{ request('cid') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                     @endforeach
