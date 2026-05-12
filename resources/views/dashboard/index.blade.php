@@ -15,7 +15,11 @@
     <div class="row g-3 mb-4">
         <div class="col-6 col-md-3">
             <div class="card border-0 shadow-sm stat-card h-100">
-                <div class="card-body">
+                <div class="card-body position-relative">
+                    <div class="stat-icon position-absolute">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
+
                     <div class="stat-label mb-1">Total Barang</div>
                     <div class="stat-value">{{ $totalItems }}</div>
                 </div>
@@ -24,6 +28,9 @@
         <div class="col-6 col-md-3">
             <div class="card border-0 shadow-sm stat-card success h-100">
                 <div class="card-body">
+                    <div class="stat-icon position-absolute">
+                        <i class="bi bi-tags"></i>
+                    </div>
                     <div class="stat-label mb-1">Total Kategori</div>
                     <div class="stat-value">{{ $totalCategories }}</div>
                 </div>
@@ -32,6 +39,9 @@
         <div class="col-6 col-md-3">
             <div class="card border-0 shadow-sm stat-card warning h-100">
                 <div class="card-body">
+                    <div class="stat-icon position-absolute">
+                        <i class="bi bi-exclamation-triangle"></i>
+                    </div>
                     <div class="stat-label mb-1">Stok Menipis</div>
                     <div class="stat-value">{{ $stokMenipis }}</div>
                 </div>
@@ -40,6 +50,9 @@
         <div class="col-6 col-md-3">
             <div class="card border-0 shadow-sm stat-card danger h-100">
                 <div class="card-body">
+                    <div class="stat-icon position-absolute">
+                        <i class="bi bi-x-circle"></i>
+                    </div>
                     <div class="stat-label mb-1">Stok Habis</div>
                     <div class="stat-value">{{ $stokHabis }}</div>
                 </div>

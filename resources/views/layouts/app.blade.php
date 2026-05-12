@@ -267,6 +267,19 @@
         .page-link:focus {
             box-shadow: 0 0 0 3px rgba(0, 180, 216, .2);
         }
+
+        .stat-icon {
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 34px;
+            opacity: 0.12;
+        }
+
+        .stat-card .card-body {
+            padding-right: 15px;
+            padding-left: 75px;
+        }
     </style>
 
     @stack('styles')
