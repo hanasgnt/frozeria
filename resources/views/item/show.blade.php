@@ -2,79 +2,255 @@
 @section('title', 'Detail Barang')
 
 @section('content')
-<div class="page-header">
+
+<!-- PAGE HEADER -->
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+
     <div>
-        <div style="font-size:13px; margin-bottom:6px;">
-            <a href="{{ route('dashboard') }}" style="color:var(--cyan-dark); text-decoration:none;">‹ Kembali</a>
-            &nbsp; <strong>Detail Barang</strong>
+
+        <div class="small mb-2">
+            <a href="{{ route('dashboard') }}"
+               class="text-decoration-none"
+               style="color:var(--cyan-dark);">
+
+                ‹ Kembali
+            </a>
+
+            <span class="mx-1 text-muted">/</span>
+
+            <strong>Detail Barang</strong>
         </div>
-        <div class="page-title">{{ $item->name }}</div>
+
+        <h3 class="fw-bold mb-1" style="color:var(--navy);">
+            {{ $item->name }}
+        </h3>
+
         @if($item->category_id)
-            <span class="badge" style="margin-top:4px;">{{ $item->category->name }}</span>
+            <span class="badge-kategori">
+                {{ $item->category->name }}
+            </span>
         @endif
+
     </div>
-    <div style="display:flex; gap:8px;">
-        <a href="{{ route('transaction.create', $item) }}" class="btn btn-primary">+ Input Stok</a>
-        <a href="{{ route('transaction.history', $item) }}" class="btn btn-outline">📋 Riwayat</a>
-        <a href="{{ route('item.edit', $item) }}" class="btn btn-secondary">Edit</a>
-        <button class="btn btn-danger" onclick="openDeleteModal('{{ route('item.destroy', $item) }}', '{{ addslashes($item->name) }}')">Hapus</button>
+
+    <!-- ACTION BUTTON -->
+    <div class="d-flex flex-wrap gap-2">
+
+        <a href="{{ route('transaction.create', $item) }}"
+           class="btn btn-primary">
+
+            <i class="bi bi-plus-lg me-1"></i>
+            Input Stok
+        </a>
+
+        <a href="{{ route('transaction.history', $item) }}"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-clock-history me-1"></i>
+            Riwayat
+        </a>
+
+        <a href="{{ route('item.edit', $item) }}"
+           class="btn btn-secondary">
+
+            <i class="bi bi-pencil-square me-1"></i>
+            Edit
+        </a>
+
+        <button class="btn btn-danger"
+                onclick="openDeleteModal(
+                    '{{ route('item.destroy', $item) }}',
+                    '{{ addslashes($item->name) }}'
+                )">
+
+            <i class="bi bi-trash me-1"></i>
+            Hapus
+        </button>
+
     </div>
+
 </div>
 
-<div style="display:grid; grid-template-columns: 260px 1fr; gap:20px; align-items:start;">
-    <!-- Foto -->
-    <div class="card">
-        <div class="card-body" style="text-align:center; padding:20px;">
-            @if($item->photo)
-                <img src="{{ asset('storage/'.$item->photo) }}" style="width:100%; max-height:220px; object-fit:cover; border-radius:8px;">
-            @else
-                <div style="width:100%; height:180px; background:var(--gray-100); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:64px; color:var(--gray-300);">
-                    🧊
-                </div>
-                <p style="font-size:12px; color:var(--gray-400); margin-top:10px;">Tidak ada foto</p>
-            @endif
-        </div>
-    </div>
+<!-- CONTENT -->
+<div class="row g-4 align-items-start">
 
-    <!-- Detail Fields -->
-    <div class="card">
-        <div class="card-header">Informasi Barang</div>
-        <div class="card-body">
-            <div class="detail-grid">
-                <div class="detail-field">
-                    <label>Jumlah Stok</label>
-                    <div class="value
-                        @if($item->stock == 0) stok-habis
-                        @elseif($item->stock < 20) stok-menipis
-                        @else stok-ok @endif
-                    ">{{ $item->stock }} {{ $item->unit }}</div>
-                </div>
-                <div class="detail-field">
-                    <label>Stok Minimum</label>
-                    <div class="value">{{ $item->minimum_stock ?? '—' }} {{ $item->minimum_stock ? $item->unit : '' }}</div>
-                </div>
-                <div class="detail-field">
-                    <label>Harga Jual</label>
-                    <div class="value">{{ $item->selling_price ? 'Rp '.number_format($item->selling_price,0,',','.') : '—' }}</div>
-                </div>
-                <div class="detail-field">
-                    <label>Harga Beli</label>
-                    <div class="value">{{ $item->purchase_price ? 'Rp '.number_format($item->purchase_price,0,',','.') : '—' }}</div>
-                </div>
-                <div class="detail-field">
-                    <label>Berat / Ukuran</label>
-                    <div class="value">{{ $item->weight ? $item->weight . ' ' . $item->unit : '—' }}</div>
-                </div>
-                <div class="detail-field">
-                    <label>Lokasi Simpan</label>
-                    <div class="value">{{ $item->storage_location ?? '—' }}</div>
-                </div>
-                <div class="detail-field" style="grid-column:1/-1;">
-                    <label>Deskripsi</label>
-                    <div class="value" style="min-height:60px;">{{ $item->description ?? '—' }}</div>
-                </div>
+    <!-- FOTO -->
+    <div class="col-lg-3">
+
+        <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-body text-center p-3">
+
+                @if($item->photo)
+
+                    <img src="{{ asset('storage/'.$item->photo) }}"
+                         class="img-fluid rounded-3"
+                         style="width:100%; max-height:240px; object-fit:cover;">
+
+                @else
+
+                    <div class="d-flex align-items-center justify-content-center rounded-3"
+                         style="
+                            height:220px;
+                            background:#f1f5f9;
+                            color:#94a3b8;
+                            font-size:64px;
+                         ">
+
+                        🧊
+
+                    </div>
+
+                    <p class="small text-muted mt-3 mb-0">
+                        Tidak ada foto
+                    </p>
+
+                @endif
+
             </div>
+
         </div>
+
     </div>
+
+    <!-- INFORMASI -->
+    <div class="col-lg-9">
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-header bg-white border-bottom fw-semibold py-3">
+                Informasi Barang
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <!-- STOK -->
+                    <div class="col-md-6">
+
+                        <label class="small text-muted mb-1 d-block">
+                            Jumlah Stok
+                        </label>
+
+                        <div class="detail-value
+                            @if($item->stock == 0)
+                                stok-habis
+                            @elseif($item->stock < 20)
+                                stok-menipis
+                            @else
+                                stok-ok
+                            @endif
+                        ">
+                            {{ $item->stock }} {{ $item->unit }}
+                        </div>
+
+                    </div>
+
+                    <!-- STOK MIN -->
+                    <div class="col-md-6">
+
+                        <label class="small text-muted mb-1 d-block">
+                            Stok Minimum
+                        </label>
+
+                        <div class="detail-value">
+                            {{ $item->minimum_stock ?? '—' }}
+                            {{ $item->minimum_stock ? $item->unit : '' }}
+                        </div>
+
+                    </div>
+
+                    <!-- HARGA JUAL -->
+                    <div class="col-md-6">
+
+                        <label class="small text-muted mb-1 d-block">
+                            Harga Jual
+                        </label>
+
+                        <div class="detail-value">
+
+                            {{ $item->selling_price
+                                ? 'Rp '.number_format($item->selling_price,0,',','.')
+                                : '—'
+                            }}
+
+                        </div>
+
+                    </div>
+
+                    <!-- HARGA BELI -->
+                    <div class="col-md-6">
+
+                        <label class="small text-muted mb-1 d-block">
+                            Harga Beli
+                        </label>
+
+                        <div class="detail-value">
+
+                            {{ $item->purchase_price
+                                ? 'Rp '.number_format($item->purchase_price,0,',','.')
+                                : '—'
+                            }}
+
+                        </div>
+
+                    </div>
+
+                    <!-- BERAT -->
+                    <div class="col-md-6">
+
+                        <label class="small text-muted mb-1 d-block">
+                            Berat / Ukuran
+                        </label>
+
+                        <div class="detail-value">
+
+                            {{ $item->weight
+                                ? $item->weight . ' ' . $item->unit
+                                : '—'
+                            }}
+
+                        </div>
+
+                    </div>
+
+                    <!-- LOKASI -->
+                    <div class="col-md-6">
+
+                        <label class="small text-muted mb-1 d-block">
+                            Lokasi Simpan
+                        </label>
+
+                        <div class="detail-value">
+                            {{ $item->storage_location ?? '—' }}
+                        </div>
+
+                    </div>
+
+                    <!-- DESKRIPSI -->
+                    <div class="col-12">
+
+                        <label class="small text-muted mb-1 d-block">
+                            Deskripsi
+                        </label>
+
+                        <div class="detail-value" style="min-height:80px;">
+
+                            {{ $item->description ?? '—' }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
+
 @endsection

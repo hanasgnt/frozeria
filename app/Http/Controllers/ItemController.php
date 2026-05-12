@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
@@ -25,16 +27,29 @@ class ItemController extends Controller
             }
         }
 
-        $items = $query->paginate(15)->withQueryString();
+        $perPage = $request->get('per_page', 1);
+
+        $items = $query
+            ->paginate($perPage)
+            ->withQueryString();
+
         $categories = Category::all();
 
-        $totalItems = Item::count();
-        $totalCategories = Category::count();
-        $lowStock = Item::whereRaw('stock <= minimum_stock AND stock > 0')->count();
-        $stokMenipis = Item::where('stock', '>', 0)->where('stock', '<', 20)->count();
-        $stokHabis = Item::where('stock', 0)->count();
+        $totalItems = DB::select("SELECT COUNT(*) as total FROM items")[0]->total;
+        $totalCategories = DB::select("SELECT COUNT(*) as total FROM categories")[0]->total;
+        $lowStock = DB::select("SELECT COUNT(*) as total FROM items WHERE stock <= minimum_stock AND stock > 0")[0]->total;
+        $stokMenipis = DB::select("SELECT COUNT(*) as total FROM items WHERE stock > 0 AND stock < 20")[0]->total;
+        $stokHabis = DB::select("SELECT COUNT(*) as total FROM items WHERE stock = 0")[0]->total;
 
-        return view('dashboard.index', compact('items', 'categories', 'totalItems', 'totalCategories', 'lowStock', 'stokMenipis', 'stokHabis'));
+        return view('dashboard.index', compact(
+            'items',
+            'categories',
+            'totalItems',
+            'totalCategories',
+            'lowStock',
+            'stokMenipis',
+            'stokHabis'
+        ));
     }
 
     public function show(Item $item)
@@ -51,29 +66,35 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'category_id' => 'nullable|exists:categories,id',
-            'stock' => 'required|integer|min:0',
-            'minimum_stock' => 'nullable|integer|min:0',
-            'unit' => 'required|string|max:50',
-            'selling_price' => 'nullable|numeric|min:0',
-            'purchase_price' => 'nullable|numeric|min:0',
-            'weight' => 'nullable|string|max:100',
-            'storage_location' => 'nullable|string|max:100',
-            'description' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'category_id' => 'nullable|exists:categories,id',
+                'stock' => 'required|integer|min:0',
+                'minimum_stock' => 'nullable|integer|min:0',
+                'unit' => 'required|string|max:50',
+                'selling_price' => 'nullable|numeric|min:0',
+                'purchase_price' => 'nullable|numeric|min:0',
+                'weight' => 'nullable|string|max:100',
+                'storage_location' => 'nullable|string|max:100',
+                'description' => 'nullable|string',
+                'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            ]);
 
-        $data = $request->except('photo');
+            $data = $request->except('photo');
 
-        if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('items', 'public');
+            if ($request->hasFile('photo')) {
+                $data['photo'] = $request->file('photo')->store('items', 'public');
+            }
+
+            Item::create($data);
+
+            return redirect()->route('dashboard')->with('success', 'Barang berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            Log::error('Error store item: ' . $e->getMessage());
+
+            return back()->with('error', 'Gagal menambahkan barang');
         }
-
-        Item::create($data);
-
-        return redirect()->route('dashboard')->with('success', 'Barang berhasil ditambahkan!');
     }
 
     public function edit(Item $item)
@@ -84,41 +105,53 @@ class ItemController extends Controller
 
     public function update(Request $request, Item $item)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'category_id' => 'nullable|exists:categories,id',
-            'stock' => 'required|integer|min:0',
-            'minimum_stock' => 'nullable|integer|min:0',
-            'unit' => 'required|string|max:50',
-            'selling_price' => 'nullable|numeric|min:0',
-            'purchase_price' => 'nullable|numeric|min:0',
-            'weight' => 'nullable|string|max:100',
-            'storage_location' => 'nullable|string|max:100',
-            'description' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'category_id' => 'nullable|exists:categories,id',
+                'stock' => 'required|integer|min:0',
+                'minimum_stock' => 'nullable|integer|min:0',
+                'unit' => 'required|string|max:50',
+                'selling_price' => 'nullable|numeric|min:0',
+                'purchase_price' => 'nullable|numeric|min:0',
+                'weight' => 'nullable|string|max:100',
+                'storage_location' => 'nullable|string|max:100',
+                'description' => 'nullable|string',
+                'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            ]);
 
-        $data = $request->except(['photo', '_method', '_token']);
+            $data = $request->except(['photo', '_method', '_token']);
 
-        if ($request->hasFile('photo')) {
-            if ($item->photo) {
-                Storage::disk('public')->delete($item->photo);
+            if ($request->hasFile('photo')) {
+                if ($item->photo) {
+                    Storage::disk('public')->delete($item->photo);
+                }
+
+                $data['photo'] = $request->file('photo')->store('items', 'public');
             }
-            $data['photo'] = $request->file('photo')->store('items', 'public');
+
+            $item->update($data);
+
+            return redirect()->route('dashboard')
+                ->with('success', 'Barang berhasil diperbarui!');
+        } catch (\Exception $e) {
+            Log::error('Error update item: ' . $e->getMessage());
+
+            return back()->with('error', 'Gagal update barang');
         }
-
-        $item->update($data);
-
-        return redirect()->route('dashboard')->with('success', 'Barang berhasil diperbarui!');
     }
 
     public function destroy(Item $item)
     {
-        if ($item->photo) {
-            Storage::disk('public')->delete($item->photo);
+        try {
+            if ($item->photo) {
+                Storage::disk('public')->delete($item->photo);
+            }
+            $item->delete();
+            return redirect()->route('dashboard')->with('success', 'Barang berhasil dihapus!');
+        } catch (\Exception $e) {
+            Log::error('Error delete item: ' . $e->getMessage());
+            return back()->with('error', 'Gagal hapus barang');
         }
-        $item->delete();
-
-        return redirect()->route('dashboard')->with('success', 'Barang berhasil dihapus!');
     }
 }
