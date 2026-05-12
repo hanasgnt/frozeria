@@ -31,6 +31,7 @@
                     <thead>
                         <tr>
                             <th>Nama Kategori</th>
+                            <th>Deskripsi</th>
                             <th>Jumlah Barang</th>
                             <th>Dibuat</th>
                             <th style="width:160px;">Aksi</th>
@@ -41,6 +42,11 @@
                             <tr>
                                 <td class="fw-medium">
                                     {{ $cat->name }}
+                                </td>
+                                <td>
+                                    <span class="text-muted" style="font-size:13px;">
+                                        {{ $cat->description ?? '-' }}
+                                    </span>
                                 </td>
                                 <td>
                                     <span class="badge-kategori">
@@ -88,7 +94,8 @@
                                                         Nama Kategori
                                                         <span class="text-danger">*</span>
                                                     </label>
-                                                    <input type="text" name="name" class="form-control"value="{{ old('name', $cat->name) }}" required>
+                                                    <input type="text" name="name"
+                                                        class="form-control"value="{{ old('name', $cat->name) }}" required>
                                                 </div>
                                                 <div>
                                                     <label class="form-label fw-medium">
@@ -112,7 +119,7 @@
                             </div>
                         @empty
                             <tr>
-                                <td colspan="4">
+                                <td colspan="5">
                                     <div class="text-center py-5 text-muted">
                                         <div style="font-size:52px;">
                                             🗂
