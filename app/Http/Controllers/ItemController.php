@@ -27,7 +27,7 @@ class ItemController extends Controller
             }
         }
 
-        $perPage = $request->get('per_page', 1);
+        $perPage = $request->get('per_page', 10);
 
         $items = $query
             ->paginate($perPage)

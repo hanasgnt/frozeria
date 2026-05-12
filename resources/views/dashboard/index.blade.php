@@ -85,7 +85,7 @@
                 </div>
             </form>
 
-            <form method="GET" class="d-flex align-items-center gap-2">
+            <form method="GET" class="d-flex align-items-center gap-2 mb-3">
                 <input type="hidden" name="search" value="{{ request('search') }}">
                 <input type="hidden" name="cid" value="{{ request('cid') }}">
                 <small class="text-muted">Tampilkan</small>
