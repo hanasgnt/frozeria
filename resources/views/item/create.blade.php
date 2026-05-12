@@ -140,8 +140,8 @@
                             <span class="text-danger">*</span>
                         </label>
 
-                        <input type="text" name="unit" class="form-control" value="{{ old('unit', 'pcs') }}"
-                            placeholder="Contoh: pcs, pack, kg, box...">
+                        <input type="text" name="unit" class="form-control"
+                            placeholder="Contoh : pcs, pack, kg, box...">
 
                         @error('unit')
                             <div class="text-danger small mt-1">
@@ -203,7 +203,7 @@
                         </label>
 
                         <input type="number" name="selling_price" class="form-control" value="{{ old('selling_price') }}"
-                            min="0" placeholder="35000">
+                            min="0" placeholder=" Contoh : 35000">
 
                         @error('selling_price')
                             <div class="text-danger small mt-1">
@@ -220,7 +220,7 @@
                         </label>
 
                         <input type="number" name="purchase_price" class="form-control"
-                            value="{{ old('purchase_price') }}" min="0" placeholder="28000">
+                            value="{{ old('purchase_price') }}" min="0" placeholder=" Contoh : 28000">
 
                         @error('purchase_price')
                             <div class="text-danger small mt-1">
@@ -242,7 +242,7 @@
                         </label>
 
                         <input type="text" name="weight" class="form-control" value="{{ old('weight') }}"
-                            placeholder="500 gram">
+                            placeholder=" Contoh : 500">
 
                     </div>
 
@@ -253,7 +253,7 @@
                         </label>
 
                         <input type="text" name="storage_location" class="form-control"
-                            value="{{ old('storage_location') }}" placeholder="Rak A-3">
+                            value="{{ old('storage_location') }}" placeholder="Contoh : Rak A-3">
 
                     </div>
 
